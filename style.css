@@ -1,0 +1,46 @@
+h1 {
+  text-align: center;
+  font-size: 100px;
+  font-family: sans-serif;
+}
+.flex-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1000px;
+}
+
+img {
+  width: 800px;
+  height: 800px;
+}
+
+button {
+  height: 5rem;
+  width: 5rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 20%;
+  background-color: khaki;
+  font-size: 40px;
+}
+
+.dots {
+  position: absolute;
+  bottom: 20%;
+  font-family: sans-serif;
+}
+
+.dot {
+  margin-left: 20px;
+  height: 50px;
+  width: 50px;
+  font-size: 45px;
+  border-radius: 50%;
+  background-color: #dcdcdc;
+  text-align: center;
+  display: inline-block;
+}
