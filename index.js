@@ -1,70 +1,54 @@
 'use strict';
 
-const allImgs = document.querySelectorAll('img');
-const btnRight = document.querySelector('.btn--right');
-const btnLeft = document.querySelector('.btn--left');
+const allImages = document.querySelectorAll('img');
+const buttonRight = document.querySelector('.button--right');
+const buttonLeft = document.querySelector('.button--left');
 const dotsContainer = document.querySelector('.dots');
 
-// Initialization
-allImgs.forEach((img) => {
-  if (img.className !== 'img1') img.style.display = 'none';
+let currentSlide = 1;
+let maxSlide = allImages.length;
+
+const goToSlide = function (currentSlide) {
+  allImages.forEach((image) => (image.style.display = 'none'));
+
+  document.querySelector(`.image${currentSlide}`).style.display = 'inline';
+};
+
+goToSlide(1);
+
+const goToNextSlide = function () {
+  if (currentSlide === maxSlide) currentSlide = 1;
+  else currentSlide++;
+
+  goToSlide(currentSlide);
+};
+
+const goToPrevSlide = function () {
+  if (currentSlide === 1) currentSlide = maxSlide;
+  else currentSlide--;
+
+  goToSlide(currentSlide);
+};
+
+allImages.forEach((_, i) => {
+  const html = `<span class='dot' data-number="${currentSlide + i}">${
+    currentSlide + i
+  }</span>`;
+  dotsContainer.insertAdjacentHTML('beforeend', html);
 });
 
-let curSlide = 1;
-let maxSlide = allImgs.length;
+dotsContainer.addEventListener('click', function (event) {
+  if (!event.target.dataset.number) return;
 
-// Create dots
-allImgs.forEach((_, i) =>
-  dotsContainer.insertAdjacentHTML(
-    'beforeend',
-    `<span class='dot' data-number="${curSlide + i}">${curSlide + i}</span>`
-  )
-);
+  currentSlide = Number(event.target.dataset.number);
 
-const goToSlide = function (curSlide) {
-  // Hide all slides
-  allImgs.forEach((img) => (img.style.display = 'none'));
-
-  // Display current slide
-  document.querySelector(`.img${curSlide}`).style.display = 'inline';
-};
-
-const nextSlide = function () {
-  // console.log(
-  //   `curSlide : ${curSlide} ${typeof curSlide} / ${maxSlide} ${typeof maxSlide}`
-  // );
-  if (curSlide === maxSlide) curSlide = 1;
-  else curSlide++;
-  // console.log(
-  //   `curSlide : ${curSlide} ${typeof curSlide} / ${maxSlide} ${typeof maxSlide}`
-  // );
-  goToSlide(curSlide);
-};
-
-const prevSlide = function () {
-  // console.log(`curSlide before evaluation: ${curSlide} / ${maxSlide}`);
-  if (curSlide === 1) curSlide = maxSlide;
-  else curSlide--;
-  // console.log(`curSlide after evaluation: ${curSlide} / ${maxSlide}`);
-  goToSlide(curSlide);
-};
-
-dotsContainer.addEventListener('click', function (e) {
-  // Guard clause
-  if (!e.target.dataset.number) return;
-
-  // Update curSlide
-  curSlide = +e.target.dataset.number;
-  console.log(
-    `curSlide : ${curSlide} ${typeof curSlide} / ${maxSlide} ${typeof maxSlide}`
-  );
-  goToSlide(curSlide);
+  goToSlide(currentSlide);
 });
 
-btnRight.addEventListener('click', nextSlide);
-btnLeft.addEventListener('click', prevSlide);
+buttonRight.addEventListener('click', goToNextSlide);
+buttonLeft.addEventListener('click', goToPrevSlide);
 
-document.addEventListener('keydown', function (e) {
-  e.key === 'ArrowRight' && nextSlide();
-  e.key === 'ArrowLeft' && prevSlide();
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'ArrowRight') goToNextSlide();
+  if (event.key === 'ArrowLeft') goToPrevSlide();
 });
